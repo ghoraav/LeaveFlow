@@ -1,0 +1,78 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- Include the JSTL core tag library --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%-- Include the JSTL formatting tag library (for dates) --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%-- Include the Spring Form tag library (for the apply_leave page) --%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%-- Add this line for Spring's message tags --%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeaveFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet">
+    <style>
+        body { padding-top: 70px; } /* Offset for fixed navbar */
+        .card, .table { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <%-- Language Switcher --%>
+    <ul class="navbar-nav ms-auto pe-3">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarLang" role="button" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+                Language
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarLang">
+                <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                <li><a class="dropdown-item" href="?lang=hi">हिन्दी (Hindi)</a></li>
+                <li><a class="dropdown-item" href="?lang=ta">தமிழ் (Tamil)</a></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/">LeaveFlow</a>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <%-- We use <c:if> to check if the user is logged in --%>
+                <c:if test="${not empty sessionScope.user}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"><spring:message code="header.dashboard" /></a>
+                    </li>
+                    
+                    <%-- Show "Apply" link only to employees --%>
+                    <c:if test="${sessionScope.user.role == 'ROLE_EMPLOYEE'}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/apply"><spring:message code="header.apply" /></a>
+                        </li>
+                    </c:if>
+                </c:if>
+            </ul>
+            
+            <ul class="navbar-nav">
+                <%-- Show user info and logout if logged in --%>
+                <c:if test="${not empty sessionScope.user}">
+                    <li class="nav-item">
+                        <span class="navbar-text text-white me-3">
+                            <spring:message code="header.welcome" /> ${sessionScope.user.username}
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-warning" href="${pageContext.request.contextPath}/logout"><spring:message code="header.logout" /></a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
