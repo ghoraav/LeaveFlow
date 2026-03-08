@@ -16,7 +16,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             // Set 'from' to the same email you configured in applicationContext.xml
-            message.setFrom("ghoraav.kc2022@vitstudent.ac.in"); 
+            message.setFrom("example@gmail.com"); //ur email
             message.setTo(to);
             message.setSubject(subject);
             message.setText(body);
@@ -27,4 +27,5 @@ public class EmailServiceImpl implements EmailService {
             System.err.println("Error sending email: " + e.getMessage());
         }
     }
+
 }
